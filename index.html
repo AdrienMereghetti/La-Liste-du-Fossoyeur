@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a211d">
+  <title>La Liste du Fossoyeur — Graveyard Keeper 2</title>
+  <link rel="icon" href="data/images/i_tool_book_1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="entete">
+    <h1 class="entete__titre">La Liste du Fossoyeur</h1>
+    <p class="entete__sous-titre">Liste de courses pour Graveyard Keeper 2</p>
+  </header>
+
+  <div class="mise-en-page">
+    <main class="catalogue">
+      <div class="filtres" role="search">
+        <div class="recherche">
+          <label for="recherche" class="visuellement-cache">Rechercher un objet</label>
+          <input id="recherche" class="champ recherche__champ" type="search" placeholder="Rechercher un objet…"
+                 autocomplete="off" spellcheck="false" enterkeyhint="search">
+          <button id="recherche-vider" class="recherche__vider" type="button" aria-label="Vider la recherche" hidden>✕</button>
+        </div>
+        <label for="categorie" class="visuellement-cache">Catégorie</label>
+        <select id="categorie" class="champ filtres__categorie">
+          <option value="">Toutes les catégories</option>
+        </select>
+        <p id="nb-resultats" class="filtres__resultats"></p>
+      </div>
+
+      <p id="chargement" class="message">Chargement des objets…</p>
+
+      <div id="aucun-resultat" class="message" hidden>
+        <p>Aucun objet ne correspond</p>
+        <button id="reinitialiser" class="bouton" type="button">Réinitialiser les filtres</button>
+      </div>
+
+      <ul id="grille" class="grille" aria-label="Objets"></ul>
+    </main>
+
+    <aside id="panier" class="panier" aria-labelledby="panier-titre">
+      <div class="panier__entete">
+        <h2 id="panier-titre" class="panier__titre" tabindex="-1">Ma liste</h2>
+        <p id="panier-resume" class="panier__resume"></p>
+        <button id="panier-fermer" class="bouton bouton--icone panier__fermer" type="button" aria-label="Fermer la liste">✕</button>
+        <div class="panier__outils">
+          <label for="panier-tri" class="visuellement-cache">Ordre de la liste</label>
+          <select id="panier-tri" class="champ champ--petit">
+            <option value="ajout">Mon ordre</option>
+            <option value="categorie">Par catégorie</option>
+          </select>
+          <button id="panier-organiser" class="bouton bouton--petit" type="button" aria-pressed="false"
+                  title="Afficher les flèches pour réordonner, renommer ou supprimer">↕ Organiser</button>
+          <button id="panier-nouvel-atelier" class="bouton bouton--petit" type="button"
+                  title="Regrouper des objets sous un atelier à construire">+ Atelier</button>
+        </div>
+        <label id="panier-cible-zone" class="panier__cible" hidden>
+          Ajouts dans :
+          <select id="panier-cible" class="champ champ--petit"></select>
+        </label>
+      </div>
+
+      <p id="panier-vide" class="panier__vide">Ta liste est vide. Ajoute des objets depuis la grille.</p>
+      <ul id="panier-lignes" class="panier__lignes" aria-label="Objets de ma liste"></ul>
+
+      <div class="panier__actions">
+        <button id="action-copier" class="bouton" type="button">Copier la liste</button>
+        <button id="action-partager-lien" class="bouton" type="button">Partager la liste</button>
+        <button id="action-plus" class="bouton bouton--icone" type="button" aria-label="Plus d'actions"
+                aria-expanded="false" aria-controls="actions-plus" title="Plus d'actions">⋯</button>
+        <div id="actions-plus" class="panier__actions-plus" hidden>
+          <button id="action-partager-texte" class="bouton" type="button" hidden>Partager le texte</button>
+          <button id="action-exporter" class="bouton" type="button">Exporter CSV</button>
+          <button id="action-vider" class="bouton bouton--danger" type="button">Vider le panier</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div id="voile" class="voile" hidden></div>
+
+  <button id="panier-ouvrir" class="bouton-flottant" type="button" aria-controls="panier" aria-expanded="false">
+    <span class="bouton-flottant__texte">
+      <span>Ma liste</span>
+      <span id="panier-cible-flottant" class="bouton-flottant__cible" hidden></span>
+    </span>
+    <span id="panier-compteur" class="bouton-flottant__compteur">0</span>
+  </button>
+
+  <dialog id="dialogue" class="dialogue">
+    <form method="dialog">
+      <h2 id="dialogue-titre" class="dialogue__titre"></h2>
+      <p id="dialogue-message" class="dialogue__message"></p>
+      <input id="dialogue-saisie" class="champ dialogue__saisie" type="text" maxlength="60" autocomplete="off"
+             enterkeyhint="done" aria-labelledby="dialogue-titre" hidden>
+      <textarea id="dialogue-texte" class="champ dialogue__texte" readonly rows="8" hidden></textarea>
+      <div id="dialogue-choix" class="dialogue__choix"></div>
+    </form>
+  </dialog>
+
+  <div id="annonce" class="visuellement-cache" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Site statique : aucune étape de build, la racine du projet est publiée telle quelle.
+# data/items.json et data/images/ doivent donc être générés AVANT le déploiement.
+[build]
+  publish = "."
+
+# Les images du jeu et le fond ne changent pas : cache navigateur d'une semaine.
+[[headers]]
+  for = "/data/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

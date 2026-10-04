@@ -1,0 +1,993 @@
+/* La Liste du Fossoyeur — feuille de style unique */
+
+:root {
+  --fond: #2a211d;
+  --voile-haut: rgba(20, 14, 10, 0.55);
+  --voile-bas: rgba(20, 14, 10, 0.75);
+  --surface: rgba(30, 24, 21, 0.92);
+  --surface-forte: #1e1815;
+  --vignette: #2b2f3a;
+  --vignette-bord: #4a5060;
+  --vignette-ombre: rgba(0, 0, 0, 0.45);
+  --vignette-panier: #d9b77e;
+  --vignette-panier-bord: #c9a14a;
+  --carte: rgba(24, 19, 17, 0.82);
+  --carte-bord: rgba(201, 161, 74, 0.18);
+  --champ: #23262f;
+  --champ-bord: #4a5060;
+  --texte: #f2ede4;
+  --texte-attenue: #a69c8c;
+  --accent: #c9a14a;
+  --accent-texte: #1e1815;
+  --danger: #b5523b;
+  --badge: #8c2f1f;
+
+  --rayon: 6px;
+  --cible: 44px;
+  --largeur-panier: 360px;
+  --police-titre: "Pixelify Sans", system-ui, sans-serif;
+  --police: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--fond);
+  color: var(--texte);
+  font-family: var(--police);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* Fond bois fixe : pseudo-élément plutôt que background-attachment: fixed (non pris en charge sur iOS). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(var(--voile-haut), var(--voile-bas)),
+    url("../assets/fond-bois.jpg") center / cover no-repeat,
+    var(--fond);
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.visuellement-cache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- En-tête ---------- */
+
+.entete {
+  padding: 20px 16px 8px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.entete__titre {
+  font-family: var(--police-titre);
+  font-weight: 700;
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  letter-spacing: 0.02em;
+  color: var(--vignette-panier);
+}
+
+.entete__sous-titre {
+  color: var(--texte);
+  opacity: 0.85;
+}
+
+/* ---------- Mise en page ---------- */
+
+.mise-en-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 8px 16px 96px;
+}
+
+@media (min-width: 900px) {
+  .mise-en-page {
+    grid-template-columns: minmax(0, 1fr) var(--largeur-panier);
+    align-items: start;
+    padding-bottom: 32px;
+  }
+}
+
+/* ---------- Champs et boutons ---------- */
+
+.champ {
+  min-height: var(--cible);
+  padding: 8px 12px;
+  border: 1px solid var(--champ-bord);
+  border-radius: var(--rayon);
+  background: var(--champ);
+  /* 16 px minimum : évite le zoom automatique d'iOS sur les champs. */
+  font-size: 16px;
+}
+
+.champ:hover,
+.champ:focus {
+  border-color: var(--accent);
+}
+
+.champ:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(201, 161, 74, 0.45);
+}
+
+.champ--petit {
+  min-height: 36px;
+  padding: 4px 8px;
+}
+
+.bouton {
+  min-height: var(--cible);
+  padding: 8px 14px;
+  border: 1px solid var(--champ-bord);
+  border-radius: var(--rayon);
+  background: var(--champ);
+  cursor: pointer;
+  font-weight: 600;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+
+.bouton:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.bouton:active {
+  transform: translateY(1px);
+}
+
+.bouton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: var(--champ-bord);
+  color: inherit;
+}
+
+.bouton--principal {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-texte);
+}
+
+.bouton--principal:hover {
+  background: var(--vignette-panier);
+  color: var(--accent-texte);
+}
+
+.bouton--danger:hover {
+  border-color: var(--danger);
+  color: #e58a74;
+}
+
+.bouton--icone {
+  width: var(--cible);
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+}
+
+/* Champs numériques : on masque les flèches natives au profit des boutons − / +. */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ---------- Filtres ---------- */
+
+.filtres {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 0 -16px 12px;
+  padding: 10px 16px;
+  background: linear-gradient(rgba(20, 14, 10, 0.92), rgba(20, 14, 10, 0.8));
+  backdrop-filter: blur(4px);
+}
+
+.recherche {
+  position: relative;
+  flex: 1 1 260px;
+}
+
+.recherche__champ {
+  width: 100%;
+  padding-right: var(--cible);
+}
+
+/* Le bouton ✕ maison remplace celui des navigateurs WebKit. */
+.recherche__champ::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.recherche__vider {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--cible);
+  height: 100%;
+  border: 0;
+  background: none;
+  color: var(--texte-attenue);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.recherche__vider:hover {
+  color: var(--accent);
+}
+
+.filtres__categorie {
+  flex: 1 1 200px;
+  max-width: 100%;
+}
+
+.filtres__resultats {
+  flex: 0 0 auto;
+  color: var(--texte-attenue);
+  font-size: 14px;
+}
+
+@media (min-width: 900px) {
+  .filtres {
+    margin: 0 0 12px;
+    border-radius: var(--rayon);
+  }
+}
+
+/* ---------- Messages ---------- */
+
+.message {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 17px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* ---------- Grille d'objets ---------- */
+
+.grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.carte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 8px;
+  border: 1px solid var(--carte-bord);
+  border-radius: var(--rayon);
+  background: var(--carte);
+  text-align: center;
+}
+
+.vignette {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 90px;
+  height: 90px;
+  flex: 0 0 auto;
+  border: 1px solid var(--vignette-bord);
+  border-radius: var(--rayon);
+  background: var(--vignette);
+  box-shadow: inset 0 0 10px var(--vignette-ombre);
+}
+
+.vignette img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.carte--dans-panier .vignette {
+  background: var(--vignette-panier);
+  border-color: var(--vignette-panier-bord);
+  box-shadow: inset 0 0 10px rgba(120, 80, 20, 0.45), 0 0 0 1px var(--vignette-panier-bord);
+}
+
+/* Placeholder neutre si l'image ne charge pas. */
+.vignette--sans-image img {
+  display: none;
+}
+
+.vignette--sans-image::after {
+  content: "?";
+  font-family: var(--police-titre);
+  font-size: 34px;
+  color: var(--vignette-bord);
+}
+
+.carte--dans-panier .vignette--sans-image::after {
+  color: rgba(30, 24, 21, 0.45);
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border: 2px solid var(--vignette-panier);
+  border-radius: 12px;
+  background: var(--badge);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}
+
+.carte__nom {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.carte__categorie {
+  margin-top: -4px;
+  color: var(--texte-attenue);
+  font-size: 12px;
+}
+
+/* Pousse le sélecteur et le bouton en bas : cartes alignées malgré des noms de longueurs différentes. */
+.carte__nom + .carte__categorie {
+  margin-bottom: auto;
+}
+
+.quantite {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  width: 100%;
+}
+
+.quantite__bouton {
+  flex: 0 0 var(--cible);
+  min-height: var(--cible);
+  border: 1px solid var(--champ-bord);
+  border-radius: var(--rayon);
+  background: var(--champ);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.quantite__bouton:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.quantite__champ {
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 0;
+  padding: 4px 2px;
+  text-align: center;
+}
+
+.carte__ajouter {
+  width: 100%;
+  padding: 8px 6px;
+  font-size: 14px;
+}
+
+/* ---------- Panier ---------- */
+
+.panier {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--carte-bord);
+  border-radius: var(--rayon);
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.panier__entete {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid var(--carte-bord);
+}
+
+.panier__titre {
+  font-family: var(--police-titre);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--vignette-panier);
+}
+
+.panier__resume {
+  color: var(--texte-attenue);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panier__fermer {
+  grid-column: 3;
+}
+
+.panier__outils {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.panier__outils .champ {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.panier__cible {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--texte-attenue);
+  font-size: 14px;
+}
+
+.panier__cible .champ {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.bouton--petit {
+  min-height: 36px;
+  padding: 4px 10px;
+  font-size: 14px;
+}
+
+.bouton--actif,
+.bouton--actif:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-texte);
+}
+
+.panier__vide {
+  padding: 24px 14px;
+  color: var(--texte-attenue);
+  text-align: center;
+}
+
+.panier__lignes {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 0 8px;
+}
+
+/* « Sans atelier » et sous-titres de catégorie. */
+.panier__groupe,
+.panier__categorie {
+  padding: 8px 12px 2px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.panier__categorie {
+  color: var(--texte-attenue);
+  font-size: 11px;
+}
+
+.panier__categorie--atelier {
+  padding-left: 30px;
+}
+
+/* Ligne d'objet : une seule rangée [poignée] [vignette] [nom] [quantité ou flèches]. */
+.ligne {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 2px 8px 2px 6px;
+}
+
+.ligne + .ligne {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Objets d'un atelier : indentés, avec un filet doré à gauche. */
+.ligne--atelier {
+  padding-left: 18px;
+  background-image: linear-gradient(to right, transparent 9px, rgba(201, 161, 74, 0.45) 9px 11px, transparent 11px);
+}
+
+.ligne__vignette {
+  width: 36px;
+  height: 36px;
+}
+
+.ligne__vignette img {
+  width: 32px;
+  height: 32px;
+}
+
+.ligne__vignette.vignette--sans-image::after {
+  font-size: 18px;
+}
+
+.ligne__nom {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.ligne .quantite,
+.ligne__organiser {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  width: auto;
+}
+
+.ligne .quantite__bouton {
+  flex: 0 0 36px;
+  width: 36px;
+  min-height: 36px;
+  font-size: 18px;
+}
+
+.ligne__organiser .quantite__bouton {
+  font-size: 14px;
+}
+
+.ligne .quantite__champ {
+  flex: 0 0 48px;
+  width: 48px;
+  min-height: 36px;
+}
+
+.ligne__supprimer {
+  color: var(--texte-attenue);
+}
+
+.ligne__supprimer.quantite__bouton {
+  font-size: 15px;
+}
+
+.ligne__supprimer:hover {
+  border-color: var(--danger);
+  color: #e58a74;
+}
+
+/* Poignée de glisser-déposer : six points dessinés en CSS. */
+.poignee {
+  flex: 0 0 24px;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  min-height: var(--cible);
+  margin: 0 -2px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--rayon);
+  background: none;
+  color: var(--texte-attenue);
+  cursor: grab;
+  touch-action: none;
+}
+
+.poignee::before {
+  content: "";
+  width: 10px;
+  height: 15px;
+  background: radial-gradient(circle, currentColor 1.4px, transparent 1.6px) 0 0 / 5px 5px;
+}
+
+.poignee:hover,
+.poignee:focus-visible {
+  color: var(--accent);
+}
+
+/* En-tête d'atelier. */
+.atelier {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  margin-top: 6px;
+  padding: 2px 8px 2px 6px;
+  border-top: 1px solid var(--carte-bord);
+  border-bottom: 1px solid var(--carte-bord);
+  background: rgba(201, 161, 74, 0.12);
+}
+
+.atelier:first-child {
+  margin-top: 0;
+  border-top: 0;
+}
+
+.atelier__basculer {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--cible);
+  padding: 0 4px;
+  border: 0;
+  border-radius: var(--rayon);
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.atelier__chevron {
+  flex: 0 0 14px;
+  color: var(--accent);
+}
+
+.atelier__nom {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--police-titre);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--vignette-panier);
+}
+
+.atelier__compte {
+  flex: 0 0 auto;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: rgba(201, 161, 74, 0.25);
+  color: var(--texte);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}
+
+.atelier__basculer:hover .atelier__nom {
+  color: var(--accent);
+}
+
+.atelier__vide {
+  padding: 8px 12px 8px 30px;
+  color: var(--texte-attenue);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Glisser-déposer en cours. */
+.ligne--glissee {
+  position: relative;
+  z-index: 3;
+  border-radius: var(--rayon);
+  background-color: var(--champ);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--accent);
+  opacity: 0.95;
+}
+
+.ligne--glissee .poignee {
+  cursor: grabbing;
+  color: var(--accent);
+}
+
+/* Repère d'insertion : hauteur nulle pour ne pas décaler les lignes pendant le glissement. */
+.panier__indicateur {
+  position: relative;
+  height: 0;
+}
+
+.panier__indicateur::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+body.glissement {
+  cursor: grabbing;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.panier__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 6px;
+  padding: 8px 12px 10px;
+  border-top: 1px solid var(--carte-bord);
+}
+
+.panier__actions .bouton {
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.panier__actions-plus {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 6px;
+}
+
+/* Desktop : panneau latéral fixe. */
+@media (min-width: 900px) {
+  .panier {
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+  }
+
+  .panier__fermer,
+  .bouton-flottant,
+  .voile {
+    display: none !important;
+  }
+}
+
+/* Mobile : tiroir ouvert par le bouton flottant. */
+@media (max-width: 899.98px) {
+  .panier {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    width: min(420px, 100%);
+    border-radius: 0;
+    border-width: 0 0 0 1px;
+    background: var(--surface-forte);
+    padding-bottom: env(safe-area-inset-bottom);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0s linear 0.25s;
+  }
+
+  .panier--ouvert {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.25s ease;
+  }
+
+  /* Cibles tactiles complètes dans le tiroir. */
+  .ligne .quantite__bouton {
+    flex-basis: var(--cible);
+    width: var(--cible);
+    min-height: var(--cible);
+  }
+
+  .ligne .quantite__champ {
+    min-height: var(--cible);
+  }
+
+  .panier__outils .bouton--petit,
+  .panier__outils .champ--petit,
+  .panier__cible .champ--petit {
+    min-height: 40px;
+  }
+
+  body.tiroir-ouvert {
+    overflow: hidden;
+  }
+}
+
+.voile {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.bouton-flottant {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 8px 12px 8px 18px;
+  border: 2px solid var(--vignette-panier-bord);
+  border-radius: 26px;
+  background: var(--surface-forte);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  font-family: var(--police-titre);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--vignette-panier);
+}
+
+.bouton-flottant__texte {
+  display: grid;
+  justify-items: start;
+  line-height: 1.1;
+}
+
+.bouton-flottant__cible {
+  max-width: 45vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--police);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texte-attenue);
+}
+
+.bouton-flottant__compteur {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 15px;
+  background: var(--accent);
+  color: var(--accent-texte);
+  font-family: var(--police);
+  font-size: 15px;
+  line-height: 30px;
+  text-align: center;
+}
+
+/* Ajout au panier : le bouton flottant pulse pour confirmer l'ajout sur mobile. */
+.bouton-flottant--pulse {
+  animation: pulse 0.45s ease;
+}
+
+@keyframes pulse {
+  40% {
+    transform: scale(1.12);
+    border-color: var(--vignette-panier);
+  }
+}
+
+/* ---------- Boîte de dialogue ---------- */
+
+.dialogue {
+  width: min(440px, calc(100% - 32px));
+  padding: 0;
+  border: 1px solid var(--vignette-panier-bord);
+  border-radius: var(--rayon);
+  background: var(--surface-forte);
+  color: var(--texte);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+}
+
+.dialogue::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.dialogue form {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+}
+
+.dialogue__titre {
+  font-family: var(--police-titre);
+  font-size: 1.3rem;
+  color: var(--vignette-panier);
+}
+
+.dialogue__message {
+  white-space: pre-line;
+}
+
+.dialogue__saisie {
+  width: 100%;
+}
+
+.dialogue__texte {
+  width: 100%;
+  resize: vertical;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 14px;
+}
+
+.dialogue__choix {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panier,
+  .panier--ouvert {
+    transition: none;
+  }
+
+  .bouton-flottant--pulse {
+    animation: none;
+  }
+}
